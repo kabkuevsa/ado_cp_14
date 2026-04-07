@@ -1,0 +1,2 @@
+wwwroot\index.html
+C:\Users\saidk\source\repos\CourseManagement.Api\CourseManagement.Api\wwwroot\index.html

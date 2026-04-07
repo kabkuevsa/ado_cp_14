@@ -1,0 +1,514 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление учебным процессом</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+        }
+
+            button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .message {
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+            .message.success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+                display: block;
+            }
+
+            .message.error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+                display: block;
+            }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 2px;
+        }
+
+        .relation-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Управление учебным процессом</h1>
+
+        <!-- Создание преподавателя -->
+        <div class="card">
+            <h2>👨‍🏫 Шаг 1: Создать преподавателя</h2>
+            <form id="teacherForm" onsubmit="createTeacher(event)">
+                <div class="form-group">
+                    <label>Имя:</label>
+                    <input type="text" id="t_fname" placeholder="Иван" required>
+                </div>
+                <div class="form-group">
+                    <label>Фамилия:</label>
+                    <input type="text" id="t_lname" placeholder="Иванов" required>
+                </div>
+                <button type="submit" class="btn-success">Создать</button>
+            </form>
+        </div>
+
+        <!-- Создание студента -->
+        <div class="card">
+            <h2>👨‍🎓 Шаг 2: Создать студента</h2>
+            <form id="studentForm" onsubmit="createStudent(event)">
+                <div class="form-group">
+                    <label>Имя:</label>
+                    <input type="text" id="s_fname" placeholder="Петр" required>
+                </div>
+                <div class="form-group">
+                    <label>Фамилия:</label>
+                    <input type="text" id="s_lname" placeholder="Петров" required>
+                </div>
+                <button type="submit" class="btn-success">Создать</button>
+            </form>
+        </div>
+
+        <!-- Создание курса -->
+        <div class="card">
+            <h2>📚 Шаг 3: Создать курс</h2>
+            <form id="courseForm" onsubmit="createCourse(event)">
+                <div class="form-group">
+                    <label>Название курса:</label>
+                    <input type="text" id="c_title" placeholder="Математика" required>
+                </div>
+                <div class="form-group">
+                    <label>ID Преподавателя:</label>
+                    <input type="number" id="c_teacher_id" placeholder="1" required>
+                </div>
+                <button type="submit" class="btn-success">Создать</button>
+            </form>
+        </div>
+
+        <!-- Запись студента на курс -->
+        <div class="card">
+            <h2>✍️ Шаг 4: Записать студента на курс</h2>
+            <form id="enrollForm" onsubmit="enrollStudent(event)">
+                <div class="form-group">
+                    <label>ID Курса:</label>
+                    <input type="number" id="enroll_course_id" placeholder="1" required>
+                </div>
+                <div class="form-group">
+                    <label>ID Студента:</label>
+                    <input type="number" id="enroll_student_id" placeholder="1" required>
+                </div>
+                <button type="submit" class="btn-success">Записать</button>
+            </form>
+            <div id="msg_enroll" class="message"></div>
+        </div>
+
+        <!-- ТАБЛИЦЫ С ОТОБРАЖЕНИЕМ ВСЕХ СВЯЗЕЙ -->
+        <div class="grid-2">
+            <!-- Курсы с преподавателями и студентами -->
+            <div class="card">
+                <h2>📚 Курсы (с преподавателями и студентами)</h2>
+                <button onclick="loadAll()" class="btn-primary" style="margin-bottom:15px">🔄 Обновить</button>
+                <table id="coursesTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Преподаватель</th>
+                            <th>Студенты</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <!-- Студенты с их курсами -->
+            <div class="card">
+                <h2>👨‍ Студенты (с курсами)</h2>
+                <table id="studentsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Имя</th>
+                            <th>Курсы</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Преподаватели с их курсами -->
+        <div class="card">
+            <h2>👨‍🏫 Преподаватели (с курсами)</h2>
+            <table id="teachersTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя</th>
+                        <th>Курсы</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const API = '/api';
+        window.onload = loadAll;
+
+        // Загрузка всех данных
+        async function loadAll() {
+            await loadCourses();
+            await loadStudents();
+            await loadTeachers();
+        }
+
+        // 1. Загрузка курсов с преподавателями и студентами
+        async function loadCourses() {
+            const tbody = document.querySelector('#coursesTable tbody');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Загрузка...</td></tr>';
+
+            try {
+                const res = await fetch(`${API}/courses`);
+                const courses = await res.json();
+
+                tbody.innerHTML = '';
+                if (courses.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Нет курсов</td></tr>';
+                    return;
+                }
+
+                for (const course of courses) {
+                    // Получаем студентов на этом курсе
+                    const studentsRes = await fetch(`${API}/courses/${course.id}/students`);
+                    const students = studentsRes.ok ? await studentsRes.json() : [];
+
+                    const teacherName = course.teacher ?
+                        `${course.teacher.firstName} ${course.teacher.lastName}` :
+                        'Не назначен';
+
+                    const studentsList = students.length > 0 ?
+                        students.map(s => `<span class="badge">${s.firstName} ${s.lastName}</span>`).join('') :
+                        '<span style="color:#999">Нет студентов</span>';
+
+                    tbody.innerHTML += `
+                                <tr>
+                                    <td>${course.id}</td>
+                                    <td>${course.title}</td>
+                                    <td>${teacherName}</td>
+                                    <td>${studentsList}</td>
+                                </tr>
+                            `;
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки курсов:', error);
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:red;">Ошибка</td></tr>';
+            }
+        }
+
+        // 2. Загрузка студентов с их курсами
+        async function loadStudents() {
+            const tbody = document.querySelector('#studentsTable tbody');
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Загрузка...</td></tr>';
+
+            try {
+                const res = await fetch(`${API}/students`);
+                const students = await res.json();
+
+                tbody.innerHTML = '';
+                if (students.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Нет студентов</td></tr>';
+                    return;
+                }
+
+                for (const student of students) {
+                    // Получаем курсы студента
+                    const enrollmentsRes = await fetch(`${API}/students/${student.id}/courses`);
+                    const courses = enrollmentsRes.ok ? await enrollmentsRes.json() : [];
+
+                    const coursesList = courses.length > 0 ?
+                        courses.map(c => `<span class="badge">${c.title}</span>`).join('') :
+                        '<span style="color:#999">Не записан</span>';
+
+                    tbody.innerHTML += `
+                                <tr>
+                                    <td>${student.id}</td>
+                                    <td>${student.firstName} ${student.lastName}</td>
+                                    <td>${coursesList}</td>
+                                </tr>
+                            `;
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки студентов:', error);
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:red;">Ошибка</td></tr>';
+            }
+        }
+
+        // 3. Загрузка преподавателей с их курсами
+        async function loadTeachers() {
+            const tbody = document.querySelector('#teachersTable tbody');
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Загрузка...</td></tr>';
+
+            try {
+                const res = await fetch(`${API}/teachers`);
+                const teachers = await res.json();
+
+                tbody.innerHTML = '';
+                if (teachers.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Нет преподавателей</td></tr>';
+                    return;
+                }
+
+                teachers.forEach(teacher => {
+                    const coursesList = teacher.courses && teacher.courses.length > 0 ?
+                        teacher.courses.map(c => `<span class="badge">${c.title}</span>`).join('') :
+                        '<span style="color:#999">Нет курсов</span>';
+
+                    tbody.innerHTML += `
+                                <tr>
+                                    <td>${teacher.id}</td>
+                                    <td>${teacher.firstName} ${teacher.lastName}</td>
+                                    <td>${coursesList}</td>
+                                </tr>
+                            `;
+                });
+            } catch (error) {
+                console.error('Ошибка загрузки преподавателей:', error);
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:red;">Ошибка</td></tr>';
+            }
+        }
+
+        // Создание преподавателя
+        async function createTeacher(e) {
+            e.preventDefault();
+            const data = {
+                firstName: document.getElementById('t_fname').value,
+                lastName: document.getElementById('t_lname').value,
+                email: ""
+            };
+
+            const res = await fetch(`${API}/teachers`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                alert('✅ Преподаватель создан!');
+                e.target.reset();
+                loadTeachers();
+            } else {
+                alert('❌ Ошибка при создании');
+            }
+        }
+
+        // Создание студента
+        async function createStudent(e) {
+            e.preventDefault();
+            const data = {
+                firstName: document.getElementById('s_fname').value,
+                lastName: document.getElementById('s_lname').value,
+                email: ""
+            };
+
+            const res = await fetch(`${API}/students`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                alert('✅ Студент создан!');
+                e.target.reset();
+                loadStudents();
+            } else {
+                alert('❌ Ошибка при создании');
+            }
+        }
+
+        // Создание курса
+        async function createCourse(e) {
+            e.preventDefault();
+            const data = {
+                title: document.getElementById('c_title').value,
+                teacherId: parseInt(document.getElementById('c_teacher_id').value)
+            };
+
+            const res = await fetch(`${API}/courses`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (res.ok) {
+                alert('✅ Курс создан!');
+                e.target.reset();
+                loadCourses();
+                loadTeachers();
+            } else {
+                alert('❌ Ошибка (проверьте ID преподавателя)');
+            }
+        }
+
+        async function enrollStudent(e) {
+            e.preventDefault();
+            const courseId = document.getElementById('enroll_course_id').value;
+            const studentId = document.getElementById('enroll_student_id').value;
+            const msgEl = document.getElementById('msg_enroll');
+
+            try {
+                const res = await fetch(`${API}/courses/${courseId}/enroll/${studentId}`, {
+                    method: 'POST'
+                });
+
+                if (res.ok) {
+                    msgEl.textContent = '✅ Студент записан на курс!';
+                    msgEl.className = 'message success';
+                    e.target.reset();
+                    loadAll(); 
+                } else {
+                    const errorText = await res.text();
+                    msgEl.textContent = '❌ Ошибка: ' + errorText;
+                    msgEl.className = 'message error';
+                }
+            } catch (error) {
+                msgEl.textContent = '❌ Ошибка сети';
+                msgEl.className = 'message error';
+            }
+        }
+    </script>
+</body>
+</html>
